@@ -1,0 +1,161 @@
+#+TITLE: 210628 Meeting Notes
+
+* Haskell Project Scaffolding
+There are a lot of options out there.
+
+Changed over the years.
+
+** Cabal
+This is the build system.
+
+It sets you up with minimal scaffolding and handles builds for you.
+
+*** Initing
+To get started you run:
+
+#+begin_src bash
+cabal init
+#+end_src
+
+This gets you a cabal file.
+It's gonna look a lot like this:
+
+#+begin_src cabal :tangle x210628.cabal
+cabal-version:      2.4
+name:               x210628
+version:            0.1.0.0
+
+-- A short (one-line) description of the package.
+-- synopsis:
+
+-- A longer description of the package.
+-- description:
+
+-- A URL where users can report bugs.
+-- bug-reports:
+
+-- The license under which the package is released.
+-- license:
+
+-- The package author(s).
+-- author:
+
+-- An email address to which users can send suggestions, bug reports, and patches.
+-- maintainer:
+
+-- A copyright notice.
+-- copyright:
+-- category:
+extra-source-files: CHANGELOG.md
+
+executable x210628
+    main-is:          Main.hs
+
+    -- Modules included in this executable, other than Main.
+    -- other-modules:
+
+    -- LANGUAGE extensions used by modules in this package.
+    -- other-extensions:
+    build-depends:    base ^>=4.14.1.0
+    hs-source-dirs:   app
+    default-language: Haskell2010
+#+end_src
+
+Not quite yaml, it's own thing.
+
+*** Executable
+Break down what each built executable you want to make.
+
+Each can have their own dependencies and source directories.
+
+**** Dependencies
+~build-depends:    base ^>=4.14.1.0~
+
+Note that versions in Cabal are not semver, they are [[https://pvp.haskell.org/faq/#semver][PVP]].
+Epoch.Major.Minor.Patch
+
+The ^ before >= makes the patch number a wildcard.
+
+**** Source Directories
+~hs-source-dirs:   app~
+
+Tell it where to find your code.
+
+**** Main
+~main-is:          Main.hs~
+
+Tell it where to start.
+
+*** Configure
+~cabal new-configure~
+Tells you what dependencies are needed and what order things need to get built in.
+
+This is the tool to reach for if you're ever getting dependency issues.
+
+*** Building
+~cabal new-build~
+
+*** Running
+~cabal new-run exe:x210628~
+
+*** Installing
+~cabal new-install exe:x210628~
+
+Now a symlink to your executable lives in your ~~/.cabal/bin~.
+This should be on your path and runnable anywhere!
+
+*** Testing
+*This is where I started failing to follow along.*
+
+#+begin_src cabal :tangle x210628.cabal
+test-suite x210628-test
+    -- Base language which the package is written in.
+    default-language: Haskell2010
+
+    -- The interface type and version of the test suite.
+    type:             exitcode-stdio-1.0
+    -- Directories containing source files.
+    hs-source-dirs:   test
+
+    -- The entrypoint to the test suite.
+    main-is:          Main.hs
+
+    -- Test dependencies.
+    build-depends:    base ^>=4.14.2.0
+                    , hspec >=8.2 && < 8.3
+                    , x210628
+#+end_src
+
+We then add a source file like so:
+
+#+begin_src haskell :tangle test/Main.hs
+module Main where
+
+import Test.Hspec
+
+main :: IO ()
+main = hspec $ fail "wrong"
+#+end_src
+
+We need to add the line:
+~tests: True~ to ~cabal.project.local~.
+
+Run the tests with:
+~cabal new-text x210628:x210628-test~.
+
+**** Quickcheck
+Very cool property testing.
+Let's you generate arbitrary values to test your code.
+
+I lost the thread before this, so go read the docs!
+[[https://hspec.github.io/quickcheck.html]]
+** [[https://docs.haskellstack.org/en/stable/README/][Stack]]
+Build system of tools guaranteed to work together.
+
+Guaranteed to work together.
+
+Uses:
+- GHC compiler
+- Cabal build system
+- Hackage package repository
+- Stackage package collection
