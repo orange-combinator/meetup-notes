@@ -1,0 +1,146 @@
+#+TITLE: 2021-08-02 Meetup Notes
+
+** Upcoming Talks
+
+*** Data Types A La carte
+
+[[http://www.cs.ru.nl/~W.Swierstra/Publications/DataTypesALaCarte.pdf]]
+
+John interested in discussing
+
+** A/V
+
+The hardest problem in computer science?
+
+Is this functional?
+
+When seen form a certain point of view.
+Only really having side effects when you're reading from inputs, writing to sound cards and screens.
+
+Charming that you are touching hardware directly.
+
+Still happens in some domains, i.e. cryptography hardware, touching the kernel.
+
+** Functional Programming for Embedded Environments
+
+*** Hundred Rabbits
+
+[[http://100r.co/]]
+
+Interesting work with small resource environments
+
+*** PicoLisp
+
+[[http://www.ulisp.com/show?3M]]
+
+*** Dependently Typed Assembly
+
+[[https://www.cs.cmu.edu/~rwh/papers/dtal/icfp01.pdf]]
+
+*** Ivory Lang
+
+[[https://ivorylang.org/ivory-introduction.html]]
+
+*** Copilot
+
+[[https://hackage.haskell.org/package/copilot]]
+
+*** Arduino Copilot
+
+[[https://hackage.haskell.org/package/arduino-copilot]]
+
+** State Machines
+
+Four types of state machines
+
+Not quite the Church-Turing Thesis.
+
+*** Finite Automatons
+Level-0
+
+Determenistic or non-determenistic
+
+Equivalent to regular expressions.
+
+A stop light.
+
+Process one symbol at a time.
+Processing time is proportional to length of input.
+Can't look back at previous inputs.
+Ultimately accepts or rejects an input.
+Straightforward to combine or sequence automatons.
+
+*** Push-Down Automatons
+Level-1
+
+Same as finite automaton plus a stack.
+
+As powerful as a context free grammar.
+
+If your grammar has ambiguity, then could be non-halting.
+Take infinite time to get a result.
+
+This is what you need to parse HTML!
+You can build a full XML parser.
+
+*** Restricted Turing Machines
+Level-2
+
+Like a Turing machine with a finite tape.
+
+More or less equivalent to a modern computer.
+
+Guaranteed to stop because either it will get a result or run out of memory.
+
+*** Unrestricted Turing Machines
+Level-3
+
+Unlimited memory.
+
+Can handle anything at the cost of infinite time and memory.
+
+** Programming Language Design
+
+The functional programmer approach is to look at every problem as a language design problem.
+
+These tools aren't needed for most problems.
+Just the interesting ones.
+
+The best software gives you the ability to program it.
+- Vim
+- Excel
+- Emacs
+- Doom
+- Autocad
+
+Forth historically embedded in interesting places because it's so dang easy to implement.
+
+Pascal originally built on top of a simple virtual machine that would get ported everywhere.
+
+** Forth
+
+The canonical instruction manual.
+
+[[https://www.forth.com/starting-forth/]]
+
+** Mercury Language
+
+Worth looking into at some point.
+
+Pure, typed, logic programming language.
+
+** Functors
+
+Box metaphor.
+
+Why can't you do monads in Rust?
+No higher kinded types.
+
+Need the ability to express variables at the type level.
+
+Kinds are reverse generics.
+
+Higher Kinded Types in Haskell
+[[https://patxi.medium.com/intro-to-higher-kinded-types-in-haskell-df6b719e7a69]]
+
+Scala seems to have some good ideas, but makes the higher level ideas harder to understand.
