@@ -1,0 +1,93 @@
+#+TITLE: 2021-08-09 Meetup Notes
+
+* Visualization & Generally Cool Tools
+
+** Flame Graph
+
+[[https://www.brendangregg.com/flamegraphs.html]]
+
+Jon did a great job of demoing home to use Microsoft's Flame Graph tool.
+
+Let's you record all sorts of system information.
+You can then play back in the viewer and filter and visualize the data later.
+
+A lot of stack trace info to understand what's going on in your program's execution.
+
+Let's you store symbols to give function names back to things later.
+
+Usable on most operating systems.
+Chrome inspector even has a version built in.
+
+** GHC-Vis
+
+[[http://felsin9.de/nnis/ghc-vis/]]
+
+Let's you visualize lazy data structures as your program runs.
+
+** Threadscope
+
+[[https://wiki.haskell.org/ThreadScope_Tour]]
+
+Another Haskell visualization tool.
+
+** Phoenix Dashboard
+
+[[https://elixirschool.com/blog/instrumenting-phoenix-with-live-dashboard/]]
+
+Very useful observation of the beam as your Phoenix applicaiton is running
+
+** Wingman
+
+https://www.youtube.com/watch?v=S0HvfXq3454
+
+Sandy Maguire's new tactics language for Haskell.
+
+* Quick feedback loops while coding
+
+[[https://www.tedinski.com/2019/03/11/fast-feedback-from-tests.html]]
+
+Essay that Roland mentioned.
+Shows how a good type system can remove a lot of the need for TDD.
+
+* Nerves Keyboard
+
+https://github.com/nerves-keyboard
+
+https://underjord.io/nerves-keyboard-running-a-mechanical-keyboard-with-elixir.html
+
+Seems pretty cool alternative to doing QMK.
+
+* Haskell Parsers
+
+Haskell is great for making parsers.
+What's the best way to learn?
+
+** Graham Hutton's Programming in Haskell
+
+Chapter 7 in the First Edition (Yellow Cover)
+
+Chapter 13 in the Second Edition (Blue Cover)
+
+** Graham Hutton paper
+
+https://www.cs.nott.ac.uk/~pszgmh/pearl.pdf
+
+** Write Yourself A scheme
+
+https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours
+
+* Tomland
+
+Toml parsing library we took a look at.
+
+Parsers take in a string and give you back a data type you are looking for, plus the rest of the string.
+
+* Sent
+
+[[https://tools.suckless.org/sent/]]
+
+Suckless presentation tool.
+
+Focused on staying as simple as possible.
+
+Throw together a presentation very quickly from a simple text file.
