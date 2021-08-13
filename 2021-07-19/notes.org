@@ -1,0 +1,179 @@
+#+TITLE: 2021-07-19 Meetup Notes
+
+Notes this week courtesy of @JRAK42
+
+Peter suggested we go fwd w/ my Lazy Evaluation questions...  I started by pasting Hutton's FP 7 - Lazy Evaluation prime solver:
+
+Hutton's prime solver in his: FP 7 - List Comprehensions
+
+#+begin_src haskell
+factors :: Int -> [Int] factors n = [x | x <- [1..n], n `mod` x == 0]
+prime :: Int -> Bool prime n = factors n == [1,n]
+primes :: Int -> [Int] primes n = [x | x <- [2..n], prime x]
+#+end_src
+
+....
+
+If factors is called, it *WILL* create the full List.
+But, if you *USE* factors link in the function 'prime' it'll do something interesting using substitution:
+
+#+begin_src haskell
+factors n == [1,n]
+#+end_src
+
+becomes:
+
+#+begin_src haskell
+[x | x <- [1..6], 6 `mod` x == 0] == [1,6]
+#+end_src
+
+but it doesn't stop the substitution process...
+
+#+begin_src haskell
+1 : [x | x <- [2..6], 6 `mod` x == 0] == [1,6]
+#+end_src
+
+but there is not enough on the RHS to compare so it continues...
+this isn't Fusion, but smart comparing continuing the process...
+
+#+begin_src haskell
+1 : 2 : [x | x <- [3..6], 6 `mod` x == 0] == [1,6]
+#+end_src
+
+it'll do the comparison as it has 2 terms on the LHS  Haskell will only go as far as it needs to do the comparison. In this case it only needs 2 elements. This is Lazy Evaluation.
+
+E proceeds to rewrite H's ~==~
+
+#+begin_src haskell
+listEquals :: Eq a => [a] -> [a] -> Bool
+listEquals [ ] [ ] = True
+listEquals (_:_) [ ] = False
+listEquals [ ] (_:_) = False
+listEquals (x:xs) (y:ys) = (x == y) && listEquals xs ys
+
+> factors 6 `listEquals` [1,6]
+  False
+> factors 6 == [1,6]
+  False
+
+listEquals (factors 6) [1,6]
+...
+listEquals [x | x <- [1..6], 6 `mod` x == 0] [1,6]
+...
+listEquals (1 : [x | x <- [2..6], 6 `mod` x == 0]) [1,6]
+...
+listEquals (1 : [x | x <- [2..6], 6 `mod` x == 0]) [1,6]
+
+           (1 : [x | x <- [2..6], 6 `mod` x == 0]) [1,6]
+(x == y) && listEquals xs ys
+(1 == 1) && listEquals ([x | x <- [2..6], 6 `mod` x == 0]) [6]
+True && ....
+--but True just drops away
+listEquals ([x | x <- [2..6], 6 `mod` x == 0]) [6]
+-- do we have a rule we can apply? not yet ...
+listEquals (2 : ([x | x <- [3..6], 6 `mod` x == 0]) [6]
+-- expand and apply rule 4
+(2 == 6) && listEquals ([x | x <- [3..6], 6 `mod` x == 0]) [ ]
+False && ... -- False and anything is False. Stops here.
+-- Minimum amount of evalution needed.
+#+end_src
+
+E said H uses graphs and memory cells, but there isn't any List Fusion here. Just plain Lazy Evaluation.
+
+I followed w/ a Q the Sieve solution & E worked it out in real-time...
+
+Came up with:
+#+begin_src haskell
+
+allPrimes :: [Integer]
+allPrimes = sieve [2..]
+  where sieve (this:here)
+          = this : sieve (filter (\m -> (n `mod` this) /= 0) here)
+#+end_src
+
+He then proceeded to do substitution to show how it works!
+
+#+begin_src haskell
+> 2 : sieve (filter (\m -> (m `mod` 2) /= 0) [3..])
+#+end_src
+
+if you have a List w/ ONE element, filter can work on that
+
+...
+
+here's how filter works:
+
+#+begin_src haskell
+filter _ [] = []
+filter p (x:xs) = if p x then x : filter p xs else filter p xs
+
+> 2 : sieve (3 : filter (\m -> (m `mod` 2) /= 0) [4..])
+#+end_src
+
+E says it gets messy ... nested filters!
+
+#+begin_src haskell
+> 2 : 3 : sieve (filter (\m -> (m `mod` 3) /= 0) (filter (\m -> (m `mod` 2) /= 0) [5..])) 
+> 2 : 3 : sieve (filter (\m -> (m `mod` 3) /= 0) (5 : filter (\m -> (m `mod` 2) /= 0) [6..]))
+#+end_src
+
+... so now the left filter can work on the list as it has an elem
+
+#+begin_src haskell
+> 2 : 3 : sieve (5 : filter ... ) > 2 : 3 : 5 : ...
+#+end_src
+
+So an ever expanding list of nested filters.
+
+So, E says, this too is NOT List Fusion! ... just clever use of Lazy Evaluation.
+
+...
+
+So, I asked, what is the defnition of List Fusion.
+
+E: here's a silly example:
+
+#+begin_src haskell
+map (+1) $ map (*2) [1..3]
+#+end_src
+
+using:
+
+#+begin_src haskell
+map f [ ] = [ ]
+map f (x:xs) = f x : map f xs
+map (+1) $ map (*2) [1..3]
+map (+1) $ (*2) 1 : map (*2) [2..3]
+map (+1) $ 2 : map (*2) [2..3]
+(+1) 2 : map (+1) $ map (*2) [2..3]
+3 : ...
+... 3 : 5 : (+1) 6 : map (+1) (map (*2) [ ] )
+3 : 5 : 7 : map (+1) (map (*2) [ ] )
+3 : 5 : 7 : map (+1) [ ]
+3 : 5 : 7 : [ ]
+[3, 5, 7]
+#+end_src
+
+...
+
+#+begin_src haskell
+mapM_ print $ map (+1) $ map (*2) [1..1000]
+#+end_src
+
+the list was never created. No intermediate list was created.
+
+It works on one element at a time to build the List. You will never build the list [1..1000]
+
+...
+
+E add's that the compiler will fuse the 2 maps together
+
+...
+
+E, when you study a library called Foldable, you will get fusion on those data structures. Like a map of map of map of filter of some tree, the compiler will do fusion for you. ... If you only want a partial tree, it'll only do the work needed to calculate that partial tree.
+Learn how to use map, fold, scan etc rather than write your own recursion so that you gain the compiler's Lazy & Fusion optimizations.
+E also mentioned unfoldr
+
+#+begin_src haskell
+> :type Data.List.unfoldr Data.List.unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
+#+end_src
