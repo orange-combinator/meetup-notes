@@ -1,6 +1,6 @@
 #+TITLE: 2021-07-19 Meetup Notes
 
-Notes this week courtesy of @JRAK42
+Notes this week courtesy of @JYAK42
 
 Peter suggested we go fwd w/ my Lazy Evaluation questions...  I started by pasting Hutton's FP 7 - Lazy Evaluation prime solver:
 
