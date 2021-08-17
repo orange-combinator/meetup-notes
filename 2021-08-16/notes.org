@@ -2,7 +2,7 @@
 
 * Parsing
 
-Roland working on a data format, simple key-value pairs to start.
+Rowland working on a data format, simple key-value pairs to start.
 
 * Functor Applicative Monads
 
