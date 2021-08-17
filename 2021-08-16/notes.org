@@ -1,0 +1,50 @@
+#+TITLE: 2021-08-16 Meetup Notes
+
+* Parsing
+
+Roland working on a data format, simple key-value pairs to start.
+
+* Functor Applicative Monads
+
+https://archive.org/details/mostly-adequate-guide
+
+https://mostly-adequate.gitbook.io/mostly-adequate-guide/
+
+John's recomendation as the best explanation for the best explanation of Functor Applicative.
+
+* Watched a talk
+
+[[https://www.youtube.com/watch?v=S0HvfXq3454][Sandy Maguire: A New Kind of Programming: Tactic Metaprogramming in Haskell]]
+
+** Links From Video
+
+Email:
+sandy@sandymagujired.me
+
+My blog:
+https://reasonablypolymorphic.com
+
+My new book:
+https:///leanpub.com/algebra-driven-design/
+
+Tactic Reference:
+https://github.com/haskell/haskell-language-server/blob/master/plugins/hls-tactics-plugin/COMMANDS.md
+
+Support Wingman:
+https://www.patreon.com/wingman_for_haskell
+
+* Haskell tooling
+
+** GHCIDE
+
+Auto-reloading on changes.
+
+** HLint
+
+Why people didn't need Wingman for so long.
+
+** GHCup
+
+Like an NVM.
+
+Get the version of GHC you like.
