@@ -1,0 +1,77 @@
+#+TITLE: 2021-08-23 Notes
+
+* File Extension problem
+
+Trying to transliterate a python working example to strip a filename extension.
+
+#+begin_src python
+filname[:-3]
+#+end_src
+
+Had some good immediate examples.
+
+#+begin_src haskell
+(init . init . init)
+#+end_src
+
+#+begin_src haskell
+(reverse $ drop 3 $ reverse)
+#+end_src
+
+#+begin_src haskell
+(\x -> (take $ length x - 3) x)
+#+end_src
+
+Don't think we had enough haskell experts on the line.
+
+Probably safer to
+
+* Mercury language
+
+Interesting typed logic programming language.
+
+Haskell + Prolog
+
+** Bower
+
+https://github.com/wangp/bower
+
+Mercury based email client
+
+* Logic Programming
+
+What are good problems for Logic Programming?
+
+Things with relations.
+
+Understanding if contracts mesh well.
+
+Mentioned on the Search Space podcast the possibility of better smart contracts for blockchain things.
+
+* The Search Space
+
+[[https://thesearch.space]]
+
+Great podcast discussing Logic Programming
+
+* Dawn Lang
+
+[[dawn-lang.org]]
+
+A new language that's pure and stack based.
+
+Makes some interesting promises.
+
+* Factor
+
+https://factorcode.org
+
+Another concatenative, stack-based language.
+
+* Haskell Data.text
+
+Had some fun playing around with the string splitting libraries.
+
+Couple other good ways you could implement the initial problem of splitting a file extension.
+
+But why, oh why is there no split on for Strings in the standard Haskell Library?
