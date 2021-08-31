@@ -1,0 +1,31 @@
+#+TITLE: 2021-08-30 Meetup Notes
+
+* E's EPP library
+
+https://en.wikipedia.org/wiki/Extensible_Provisioning_Protocol
+
+Working on something new for work.
+
+Gonna be able to share it with us, because it's a client not a server.
+
+* Eric's project
+
+It's going.
+
+Working on an Elixir rewrite.
+
+Scala Play framework might get dropped.
+
+* Reanimate
+
+https://reanimate.github.io
+
+Very cool reactive animation library.
+
+Rewrite of the Three Brown One Blue library.
+
+* PostgREST
+
+https://postgrest.org/en/v8.0/
+
+Haskell project where you do all your program in postgres and postgrest will automatically generate an api for you.
