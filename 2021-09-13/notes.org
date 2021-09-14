@@ -1,0 +1,103 @@
+#+TITLE: 2021-09-13 Meetup Notes
+
+* Faust
+
+Cool little language for doing Digital Signal Processing.
+
+Maps directly to arrows.
+
+Awesome compiler targets many outputs.
+
+Live compilation in the browser.
+
+More to come soon.
+
+* Regular expression parser explanation
+
+#+begin_src haskell
+
+module Types where
+
+data RE = Empty                 -- Empty Set
+        | Epsilon               -- Empty String
+        | Symbol Char           -- 'a'
+        | Alternate RE RE       -- a+b
+        | Catenate RE RE        -- ab
+        | Kleene RE
+        deriving (Eq,Show)
+
+#+end_src
+
+Given:
+a+(b+c)*
+
+We should get out something like this:
+Alternate (Symbol 'a') (Kleene (Alternate (Symbol 'b') (Symbol 'c')))
+
+#+begin_src haskell
+
+module Parser where
+
+import Types
+import Text.ParserCombinators.Parsec
+
+{-
+Map out all the possible functions you'll need to map input to values
+
+Regex    -> Catenate '+' Regex
+         -> Catenate
+Catenate -> Kleene Catenate
+         -> Kleene
+Kleene   -> Basic '*'
+         -> Basic
+Basic    -> '∅'
+         -> 'ɛ'
+         -> 'a' | 'b' ... any lowercase
+         -> '(' Regex ')'
+         -> '[' Members ']'
+-}
+
+parseRegex s = parse kleene ("from string '" ++ s ++ "'") s
+
+regex :: Parser RE
+regex = foldr1 Alternate <$> catenate `sepBy1` char '+'
+
+catenate :: Parser RE
+catenate = foldr1 Catenate <$> many1 kleene
+
+kleene :: Parser RE
+kleene =  do
+  b <- basic
+  try (grabStars b) <|> pure b
+    where
+      grabStars :: RE -> Parser [Char]
+      grabStars b = foldr (const Kleene) b <$> many1 (char '*')
+
+basic :: Parser RE
+basic =   (char '∅' >> pure Empty)
+      <|> (char 'ɛ' >> pure Epsilon)
+      <|> (Symbol <$> lower)
+      <|> between (char '(') (char ')') regex
+      <|> between (char '[') (char ']') range
+
+range :: Parser RE
+range = do
+  es <- concat <$> many singleOrGroup
+  pure $ if null es then Empty
+                    else folr1 Alternate $ map Symbol es
+    where
+      singleOrGroup :: Parser [Char]
+      singleOrGroup = do
+        single <- lower
+        try (extend single) <|> pure [single]
+          where
+            extend :: Char -> Parser [Char]
+            extend start = do
+              char '-'
+              enumFromTo start <$> lower
+#+end_src
+
+Process is:
+- Define your grammar.
+- Start writing parsers of your most basic elements.
+- Take advantage of helper functions from your parser library (lower, many1, etc)
