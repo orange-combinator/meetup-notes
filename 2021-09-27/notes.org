@@ -1,0 +1,18 @@
+#+TITLE: 2021-09-23 Notes
+
+* Aino
+
+https://ainoweb.dev/readme.html
+
+Scheduling app R has been working on.
+
+Uses ino to serve http responses very quickly.
+Much lighter weight than going for the full Phoenix framework.
+
+* XML Parsing
+
+Hard problem.
+
+Need a proper parser.
+
+E working on a streaming parser they may share in the future.
