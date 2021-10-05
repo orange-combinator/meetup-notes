@@ -1,0 +1,69 @@
+#+TITLE: 2021-10-04 Meetup Notes
+
+* New Format
+
+Everyone throw's topics in at the start.
+
+* Upcoming XML schema processing
+
+* Data Types A La Carte
+
+* Anyhow & Rust Error handling
+
+https://docs.rs/anyhow/1.0.44/anyhow/
+
+Using SQLX.
+
+Has it's own error that extends the standard Rust error.
+
+Following the Repository Service pattern.
+Borrowed from Scala/Java world.
+
+In OOP inject a repository through dependency injeciton.
+Usually a database.
+
+To be functional, we just pass in dependencies as an argument.
+
+Should get the same behaviour with the same injections.
+Can test with mock injections.
+
+Current advantage of anyhow is not needing to implement mappings for errors.
+Get them for free.
+
+* Scala Return Keyword
+
+DO NOT USE!!!
+
+Why would there be a need to return in a functional language?
+Usually just pass back the last statement.
+
+https://stackoverflow.com/a/38993743
+
+https://tpolecat.github.io/2014/05/09/return.html
+
+Let's you do some bad things.
+Return unit.
+
+** More Scala Fun
+
+Tuples can't have more than 22 items.
+
+Automatic tuple mapping from third-party libraries can make runtime exceptions.
+
+Case classes used to also have a 22 item limit.
+
+Paul Phillips has some great rants.
+
+https:/www.youtube.com/watch?v=uiJycy6dFSQ
+
+* Javascript Promises Are Not Monadic
+
+Then function seems like it should be bind, but it's not well typed enough.
+
+#+begin_src haskell
+then :: Promise a -> (a -> Any) -> Promise b
+#+end_src
+
+https://github.com/promises-aplus/promises-spec/issues/94
+
+http://brianmckenna.org/blog/category_theory_promisesaplus
